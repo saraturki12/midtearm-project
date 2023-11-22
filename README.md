@@ -1,5 +1,5 @@
 # midtearm-project
-# Movie App
+
 
 ## Description
 
