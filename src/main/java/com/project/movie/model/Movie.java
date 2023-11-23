@@ -1,12 +1,20 @@
 package com.project.movie.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "movie_type")
+// @DiscriminatorColumn(name = "movie_type")
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,8 +23,9 @@ public class Movie {
     private int releaseYear;
     private int duration;
 
-
     private String director;
+    private String movieType;
+
     public Long getId() {
         return id;
     }
@@ -33,8 +42,8 @@ public class Movie {
         return duration;
     }
 
-    public Movie() {
-    }
+    // public Movie() {
+    // }
 
     public Movie(Long id, String title, int releaseYear, int duration, String director) {
         this.id = id;

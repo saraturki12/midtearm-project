@@ -7,11 +7,16 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+
 @Repository
 public interface movierepository extends JpaRepository<Movie, Long> {
     List<Movie> findByTitle(String title);
+
     List<Movie> findByReleaseYear(int year);
+
     List<Movie> findByDirector(String director);
+
+    List<Movie> findByMovieType(String type);
 
     // Custom Query Methods with @Query Annotation
     @Query("SELECT m FROM Movie m WHERE m.releaseYear > :year")

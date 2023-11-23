@@ -1,6 +1,9 @@
 package com.project.movie.cotroller.impl;
 
+import com.project.movie.dto.MovieDto;
 import com.project.movie.model.Movie;
+import com.project.movie.repositroy.ActionMovieRepository;
+import com.project.movie.repositroy.ComedyMovieRepository;
 import com.project.movie.repositroy.movierepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,8 +19,11 @@ public class MovieController {
     @Autowired
     private movierepository movieRepository;
 
+    @Autowired
+    private ActionMovieRepository actionMovieRepository;
 
-
+    @Autowired
+    private ComedyMovieRepository comedyMovieRepository;
 
     @GetMapping("/title/{title}")
     public ResponseEntity<List<Movie>> getMoviesByTitle(@PathVariable String title) {
@@ -37,15 +43,28 @@ public class MovieController {
         return new ResponseEntity<>(movies, HttpStatus.OK);
     }
 
-
     @GetMapping
-    public ResponseEntity<List<Movie>> getAllMovies() {
-        List<Movie> movies = movieRepository.findAll();
-        return new ResponseEntity<>(movies, HttpStatus.OK);
+    public ResponseEntity<List<Movie>> getAllMovies(@RequestParam String genre) {
+        // System.out.println(genre);
+        if (genre.toLowerCase().equals("Action".toLowerCase())) {
+            return ResponseEntity.ok().body(this.movieRepository.findByMovieType("action"));
+        } else {
+
+            return ResponseEntity.ok().body(this.movieRepository.findByMovieType("comedy"));
+
+        }
+        // List<Movie> movies = movieRepository.findAll();
+        // return new ResponseEntity<>(movies, HttpStatus.OK);
     }
+
     @PostMapping
-    public ResponseEntity<Movie> createMovie(@RequestBody Movie movie) {
-        Movie newMovie = movieRepository.save(movie);
+    public ResponseEntity<Movie> createMovie(@RequestBody MovieDto movie) {
+        // if (movie.getGenre().equals("Action")) {
+
+        // } else {
+
+        // }
+        Movie newMovie = movieRepository.save(movie.toMovie());
         return new ResponseEntity<>(newMovie, HttpStatus.CREATED);
     }
 
@@ -79,5 +98,4 @@ public class MovieController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND); // Return 404 Not Found
         }
     }
-    }
-
+}

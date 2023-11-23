@@ -10,27 +10,32 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
+
 @SpringBootApplication
 public class MovieApplication implements CommandLineRunner {
 
 	public static void main(String[] args) {
 		SpringApplication.run(MovieApplication.class, args);
 	}
+
 	@Autowired
 	movierepository movierepository1;
 	@Autowired
 	ActionMovieRepository actionMovieRepository;
 	@Autowired
 	ComedyMovieRepository comedyMovieRepository;
+
 	@Override
 	public void run(String... args) throws Exception {
-
 
 		// Create a Scanner for user input
 		Scanner scanner = new Scanner(System.in);
@@ -96,8 +101,6 @@ public class MovieApplication implements CommandLineRunner {
 						System.out.println("Failed to add the movie.");
 					}
 					break;
-
-
 
 				case 2:
 					// Option to update an existing movie
@@ -222,7 +225,6 @@ public class MovieApplication implements CommandLineRunner {
 					}
 					break;
 
-
 				case 6:
 					// Option to exit the program
 					System.out.println("Exiting Movie Management System. Goodbye!");
@@ -235,11 +237,15 @@ public class MovieApplication implements CommandLineRunner {
 			}
 		}
 	}
+
+	@Bean
+	public WebMvcConfigurer corsConfigurer() {
+		return new WebMvcConfigurer() {
+			@Override
+			public void addCorsMappings(CorsRegistry registry) {
+				registry.addMapping("/**").allowedOrigins("http://localhost:4200")
+						.allowedMethods("*");
+			}
+		};
+	}
 }
-
-
-
-
-
-
-
